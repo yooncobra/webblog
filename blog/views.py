@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views.generic import DetailView
 from blog.models import Post
 
 
@@ -12,7 +13,11 @@ def post_list(request):
     return render(request, 'blog/post_list.html', params)
     
 
+'''
 def post_detail(request, pk):
     post = Post.objects.get(pk=pk)
     params = {'post': post}
     return render(request, 'blog/post_detail.html', params)
+'''
+
+post_detail = DetailView.as_view(model=Post)
