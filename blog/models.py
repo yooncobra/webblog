@@ -7,4 +7,6 @@ class Post(models.Model):
     photo = models.ImageField(blank=True, help_text='이미지를 첨부하세요.')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    
+    def __str__(self):
+        return self.title
