@@ -1,0 +1,13 @@
+
+<ul>
+
+    {% for post in post_list %}
+<li>
+    {{ post.id }}
+    <a href="/posts/{{ post.ic }}/">
+        {{ post.title }}
+    </a>
+</li>
+{% endfor %}
+
+</ul>
