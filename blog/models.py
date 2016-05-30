@@ -12,3 +12,13 @@ class Post(models.Model):
     
     def __str__(self):
         return self.title
+
+
+@python_2_unicode_compatible
+class Comment(models.Model):
+    post = models.ForeignKey(Post)
+    message = models.TextField()
+
+    def __str__(self):
+        return self.message
+
