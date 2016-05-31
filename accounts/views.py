@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model, get_backends, authenticate, login as auth_login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator as token_generator
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.encoding import force_text
@@ -61,5 +62,6 @@ def signup_confirm(request, uidb64, token):
         return redirect(settings.LOGIN_URL)
 
 
+@login_required
 def profile(request):
     return render(request, 'accounts/profile.html')
