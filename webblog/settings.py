@@ -143,3 +143,9 @@ MESSAGE_TAGS = {
 }
 
 MESSAGE_LEVEL = messages_constants.DEBUG
+
+
+try:
+    from local import *
+except ImportError:
+    pass
