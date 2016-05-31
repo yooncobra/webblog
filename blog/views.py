@@ -1,10 +1,22 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 # from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import DetailView
 from blog.models import Post, Comment
 from blog.forms import PostForm, CommentForm
+
+
+def owner_required(model_cls, user_field_name='author'):
+    def wrap(fn):
+        def inner_wrap(request, *args, **kwargs):
+            request.instance = get_object_or_404(model_cls, pk=kwargs['pk'])
+            if getattr(request.instance, user_field_name) != request.user:
+                return HttpResponseForbidden('forbidden')
+            return fn(request, *args, **kwargs)
+        return inner_wrap
+    return wrap
 
 
 def index(request):
@@ -58,9 +70,11 @@ def post_new(request):
 
 
 @login_required
+@owner_required(Post, 'author')
 def post_edit(request, pk):
     # post = Post.objects.get(pk=pk)
-    post = get_object_or_404(Post, pk=pk)
+    # post = get_object_or_404(Post, pk=pk)
+    post = request.instance
 
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES, instance=post)
@@ -94,9 +108,11 @@ def comment_new(request, post_pk):
 
 
 @login_required
+@owner_required(Comment, 'author')
 def comment_edit(request, post_pk, pk):
     # comment = Comment.objects.get(pk=pk)
-    comment = get_object_or_404(Comment, pk=pk)
+    # comment = get_object_or_404(Comment, pk=pk)
+    comment = request.instance
 
     if request.method == 'POST':
         form = CommentForm(request.POST, instance=comment)
