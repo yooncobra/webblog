@@ -1,5 +1,6 @@
 from django.contrib import messages
-from django.shortcuts import redirect, render
+#from django.http import Http404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import DetailView
 from blog.models import Post, Comment
 from blog.forms import PostForm, CommentForm
@@ -17,7 +18,8 @@ def post_list(request):
 
 '''
 def post_detail(request, pk):
-    post = Post.objects.get(pk=pk)
+    # post = Post.objects.get(pk=pk)
+    post = get_object_or_404(Post, pk=pk)
     params = {'post': post}
     return render(request, 'blog/post_detail.html', params)
 '''
@@ -27,6 +29,11 @@ class PostDetailView(DetailView):
     def get_object(self, queryset=None):
         #self.kwargs : year, month, day, pk
         #self.kwargs['year']
+        # try:
+        #    return Post.objects.get(pk=self.kwargs['pk'])
+        # except Post.DoesNotExist:
+        #   raise Http404
+
         return Post.objects.get(pk=self.kwargs['pk'])
 
 # post_detail = DetailView.as_view(model=Post)
@@ -47,7 +54,8 @@ def post_new(request):
 
 
 def post_edit(request, pk):
-    post = Post.objects.get(pk=pk)
+    # post = Post.objects.get(pk=pk)
+    post = get_object_or_404(Post, pk=pk)
 
     if request.method == 'POST':
         form = PostForm(request.POST, instance=post)
@@ -66,7 +74,8 @@ def comment_new(request, post_pk):
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
-            comment.post = Post.objects.get(pk=post_pk)
+            # comment.post = Post.objects.get(pk=post_pk)
+            comment.post = get_object_or_404(Post, pk=post_pk)
             comment.save()
             messages.info(request, '새로운 댓글을 등록했습니다.')
             return redirect('blog.views.post_detail', post_pk)
@@ -78,8 +87,8 @@ def comment_new(request, post_pk):
 
 
 def comment_edit(request, post_pk, pk):
-    comment = Comment.objects.get(pk=pk)
-
+    # comment = Comment.objects.get(pk=pk)
+    comment = get_object_or_404(Comment, pk=pk)
     if request.method == 'POST':
         form = CommentForm(request.POST, instance=comment)
         if form.is_valid():
