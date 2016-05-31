@@ -4,6 +4,11 @@ from django.contrib.auth import get_user_model
 
 
 class SignupForm(UserCreationForm):
+    is_agree = forms.BooleanField(label='약관동의',
+        error_messages = {
+            'required': '약관동의를 해주셔야 가입이 됩니다.',
+        })
+
     class Meta(UserCreationForm.Meta):
         # fields = ['username', 'email']
         fields = UserCreationForm.Meta.fields + ('email',)
@@ -19,6 +24,10 @@ class SignupForm(UserCreationForm):
 
 class SignupForm2(UserCreationForm):
     email = forms.EmailField()
+    is_agree = forms.BooleanField(label='약관동의',
+        error_messages = {
+            'required': '약관동의를 해주셔야 가입이 됩니다.',
+        })
 
     def clean_email(self):
         email = self.cleaned_data.get('email', None)
