@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^login/$', login, kwargs={
         'authentication_form': LoginForm,
     }),
+    url(r'^profile/$', views.profile),
 ]
