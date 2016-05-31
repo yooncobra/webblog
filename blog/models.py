@@ -1,13 +1,14 @@
 from django import forms
+from django.conf import settings
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
-from webblog.utils import random_name_upload_to
+from programming.utils import random_name_upload_to
 
 
 def min_length_validator(value):
     if len(value) < 3:
-        raise forms.ValidationError('3글자 이상 입력하세요!')
+        raise forms.ValidationError('3글자 이상 입력하라고 !!!')
 
 
 class PhoneField(models.CharField):
@@ -21,9 +22,10 @@ class PhoneField(models.CharField):
 
 @python_2_unicode_compatible
 class Post(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL)
     title = models.CharField(max_length=100,
             validators=[min_length_validator],
-            help_text='포스팅 제목을 100자 이내로 써 주세요.')
+            help_text='포스팅 제목을 100자 이내로 써주세요.')
     content = models.TextField()
     photo = models.ImageField(blank=True, upload_to=random_name_upload_to)
     phone = PhoneField(blank=True)
@@ -38,6 +40,7 @@ class Post(models.Model):
 @python_2_unicode_compatible
 class Comment(models.Model):
     post = models.ForeignKey(Post)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL)
     message = models.TextField()
 
     def __str__(self):
@@ -50,4 +53,3 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
-
