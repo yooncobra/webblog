@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views.generic import DetailView
 from blog.models import Post
+from blog.forms import PostForm
 
 
 def index(request):
@@ -29,3 +30,17 @@ class PostDetailView(DetailView):
 
 # post_detail = DetailView.as_view(model=Post)
 post_detail = PostDetailView.as_view()
+
+
+def post_new(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save()
+            return redirect('blog.views.post_detail', post.pk)
+    else:
+        form = PostForm()
+    return render(request, 'blog/post_form.html', {
+        'form': form,
+        })
+
