@@ -13,6 +13,10 @@
                     {{ post.title }}
                 </div>
                 <div class="panel-body">
+                    {% if post.photo %}
+                        <img src="{{ post.photo.url }}" />
+                    {% endif %}
+
                     {{ post.content|linebreaks }}
                 </div>
             </div>
