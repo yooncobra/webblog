@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.views.generic import DetailView
-from blog.models import Post
-from blog.forms import PostForm
+from blog.models import Post, Comment
+from blog.forms import PostForm, CommentForm
 
 
 def index(request):
@@ -59,4 +59,16 @@ def post_edit(request, pk):
         'form': form,
         })
 
+
+def comment_new(request, post_pk):
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('blog.views.post_detail', post_pk)
+    else:
+        form = CommentForm()
+    return render(request, 'blog/comment_form.html', {
+        'form': form,
+        })
 

@@ -16,6 +16,18 @@
                     {{ post.content|linebreaks }}
                 </div>
             </div>
+
+            <a href="{% url "blog.views.comment_new" post.pk %}" class="btn btn-primary btn-block">
+                새 댓글 쓰기
+            </a>
+
+            <ul>
+                {% for comment in post.comment_set.all %}
+                    <li>{{ comment.message }}</li>
+                {% empty %}
+                    <li>등록된 댓글이 없습니다.</li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 </div>

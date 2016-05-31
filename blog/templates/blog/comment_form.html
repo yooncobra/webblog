@@ -1,0 +1,32 @@
+{% extends "blog/base.html" %}
+{% load bootstrap3 %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <form action="" method="post">
+                    {% csrf_token %}
+
+                    {# 한줄 주석 #}
+
+                    {% comment %}
+                    <table>
+                        {{ form.as_table }}
+                    </table>
+                    {% endcomment %}
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading"></div>
+                        <div class="panel-body">
+                            {% bootstrap_form form %}
+                        </div>
+                        <div class="panel-footer text-right">
+                            <input type="submit" class="btn btn-primary" value="Submit" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
