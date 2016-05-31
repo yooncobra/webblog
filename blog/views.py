@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.views.generic import DetailView
 from blog.models import Post, Comment
@@ -12,7 +13,7 @@ def post_list(request):
     post_list = Post.objects.all()
     params = {'post_list': post_list}
     return render(request, 'blog/post_list.html', params)
-    
+
 
 '''
 def post_detail(request, pk):
@@ -67,6 +68,7 @@ def comment_new(request, post_pk):
             comment = form.save(commit=False)
             comment.post = Post.objects.get(pk=post_pk)
             comment.save()
+            messages.info(request, '새로운 댓글을 등록했습니다.')
             return redirect('blog.views.post_detail', post_pk)
     else:
         form = CommentForm()
