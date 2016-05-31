@@ -1,16 +1,16 @@
 from django.conf import settings
 from django.shortcuts import redirect, render
-from accounts.forms import SignupForm
+from accounts.forms import SignupForm, SignupForm2
 
 
 def signup(request):
     if request.method == 'POST':
-        form = SignupForm(request.POST)
+        form = SignupForm2(request.POST)
         if form.is_valid():
             form.save()
             return redirect(settings.LOGIN_URL)
     else:
-        form = SignupForm()
+        form = SignupForm2()
     return render(request, 'accounts/signup.html', {
         'form': form,
     })
