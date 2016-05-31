@@ -1,11 +1,7 @@
-{% load bootstrap3 %}<!doctype html>
-<html>
-<head>
-<meta charset="utf8" />
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
-</head>
-<body>
+{% extends "blog/base.html" %}
+{% load bootstrap3 %}
 
+{% block content %}
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
@@ -20,14 +16,17 @@
                     </table>
                     {% endcomment %}
 
-                    {% bootstrap_form form %}
-
-                    <input type="submit" class="btn btn-primary" value="Submit" />
+                    <div class="panel panel-default">
+                        <div class="panel-heading"></div>
+                        <div class="panel-body">
+                            {% bootstrap_form form %}
+                        </div>
+                        <div class="panel-footer text-right">
+                            <input type="submit" class="btn btn-primary" value="Submit" />
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
-
-
-</body>
-</html>
+{% endblock %}
