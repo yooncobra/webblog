@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^posts/(?P<pk>\d+)/$', 'blog.views.post_detail'),
 
     url(r'^posts/new/$', 'blog.views.post_new'),
+    url(r'^posts/(?P<pk>\d+)edit/$', 'blog.views.post_edit'),
 ]

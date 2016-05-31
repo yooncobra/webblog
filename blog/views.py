@@ -44,3 +44,19 @@ def post_new(request):
         'form': form,
         })
 
+
+def post_edit(request, pk):
+    post = Post.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        form = PostForm(request.POST, instance=post)
+        if forms.is_valid():
+            post = form.save()
+            return redirect('blog.views.post_detail', post.pk)
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'blog/post_form.html', {
+        'form': form,
+        })
+
+
