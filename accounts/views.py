@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import get_user_model, get_backends, login as auth_login
+from django.contrib.auth import get_user_model, get_backends, authenticate, login as auth_login
 from django.contrib.auth.tokens import default_token_generator as token_generator
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.encoding import force_text
@@ -14,11 +14,18 @@ def signup(request):
         form = SignupForm2(request.POST)
         if form.is_valid():
             user = form.save()
-            backend_cls = get_backends()[0].__class__
-            backend_path = backend_cls.__module__ + '.' + backend_cls.__name__
+
+            # backend_cls = get_backends()[0].__class__
+            # backend_path = backend_cls.__module__ + '.' + backend_cls.__name__
             # https://github.com/django/django/blob/1.9/django/contrib/auth/__init__.py#L81
-            user.backend = backend_path
-            auth_login(request, user)
+            # user.backend = backend_path
+
+            authenticated_user = authenticate(
+                    username=form.cleaned_data['username'],
+                    password=form.cleaned_data['password1'])
+
+            auth_login(request, authenticated_user)
+
             messages.info(request, '환영합니다. ;)')
             return redirect(settings.LOGIN_REDIRECT_URL)
 
