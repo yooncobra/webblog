@@ -42,7 +42,7 @@ post_detail = PostDetailView.as_view()
 
 def post_new(request):
     if request.method == 'POST':
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save()
             return redirect('blog.views.post_detail', post.pk)
@@ -58,7 +58,7 @@ def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
 
     if request.method == 'POST':
-        form = PostForm(request.POST, instance=post)
+        form = PostForm(request.POST, request.FILES, instance=post)
         if forms.is_valid():
             post = form.save()
             return redirect('blog.views.post_detail', post.pk)
