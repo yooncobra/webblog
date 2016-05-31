@@ -64,7 +64,9 @@ def comment_new(request, post_pk):
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
-            form.save()
+            comment = form.save(commit=False)
+            comment.post = Post.objects.get(pk=post_pk)
+            comment.save()
             return redirect('blog.views.post_detail', post_pk)
     else:
         form = CommentForm()
@@ -72,3 +74,17 @@ def comment_new(request, post_pk):
         'form': form,
         })
 
+
+def comment_edit(request, post_pk, pk):
+    comment = Comment.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            return redirect('blog.views.post_detail', post_pk)
+    else:
+        form = CommentForm(instance=comment)
+    return render(request, 'blog/comment_form.html', {
+        'form': form,
+        })

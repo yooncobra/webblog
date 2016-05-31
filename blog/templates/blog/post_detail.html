@@ -23,7 +23,10 @@
 
             <ul>
                 {% for comment in post.comment_set.all %}
-                    <li>{{ comment.message }}</li>
+                    <li>
+                        {{ comment.message }}
+                        <a href="{% url "blog.views.comment_edit" post.pk comment.pk %}">수정</a>
+                    </li>
                 {% empty %}
                     <li>등록된 댓글이 없습니다.</li>
                 {% endfor %}

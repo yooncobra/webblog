@@ -10,7 +10,9 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = '__all__'
 
+
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = '__all__'
+        # fields = '__all__'
+        fields = ['message']
